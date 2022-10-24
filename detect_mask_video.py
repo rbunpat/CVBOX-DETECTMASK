@@ -28,7 +28,7 @@ print('Loading mask detector...')
 maskNet = load_model("mask_detector.model")
 
 print('Starting video...')
-cam = VideoStream(src=2).start()
+cam = VideoStream(src=0).start()
 
 def takepic():
     fileindir = len([name for name in os.listdir(DIR) if os.path.isfile(os.path.join(DIR, name))])
