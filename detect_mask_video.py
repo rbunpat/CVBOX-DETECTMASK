@@ -1,13 +1,20 @@
-from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
-from tensorflow.keras.preprocessing.image import img_to_array
-from tensorflow.keras.models import load_model
-from imutils.video import VideoStream
-
 import numpy as np
 import json
 import cv2
 import os.path
 import os
+import sys
+
+#get rid of annoying warnings
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+sys.tracebacklimit = 0
+
+print('Loading Tensorflow...')
+
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
+from tensorflow.keras.preprocessing.image import img_to_array
+from tensorflow.keras.models import load_model
+from imutils.video import VideoStream
 
 
 DIR = "./nomaskpics"
@@ -29,9 +36,10 @@ def takepic():
     cv2.imwrite(filename, frame)
 
 def predictmask(frame, faceNet, maskNet):
+    smallframe = cv2.resize(frame, (0, 0), fx=0.2, fy=0.2)
     #get frame dimension and make a blob
-    (h, w) = frame.shape[:2]
-    blob = cv2.dnn.blobFromImage(frame, 1.0, (300, 300), (104.0, 177.0, 123.0))
+    (h, w) = smallframe.shape[:2]
+    blob = cv2.dnn.blobFromImage(smallframe, 1.0, (300, 300), (104.0, 177.0, 123.0))
     #pass blob through face detector and get detections
     faceNet.setInput(blob)
     detections = faceNet.forward()
@@ -51,7 +59,7 @@ def predictmask(frame, faceNet, maskNet):
             (startX, startY) = (max(0, startX), max(0, startY))
             (endX, endY) = (min(w - 1, endX), min(h - 1, endY))
             #extract region of interest, convert to RGB, resize to 224x224, and preprocess
-            face = frame[startY:endY, startX:endX]
+            face = smallframe[startY:endY, startX:endX]
             if face.any():
                 face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
                 face = cv2.resize(face, (224, 224))
@@ -59,8 +67,12 @@ def predictmask(frame, faceNet, maskNet):
                 face = preprocess_input(face)
                 #add face and bounding box to their respective lists
                 faces.append(face)
-                locs.append((startX, startY, endX, endY))
-    
+                startx = int(startX * 5)
+                starty = int(startY * 5)
+                endx = int(endX * 5)
+                endy = int(endY * 5)
+                locs.append((startx, starty, endx, endy))
+
     #only make predictions if at least one face was detected
     if len(faces) > 0:
         #make batch predictions on all faces at once in the for loop above
@@ -77,7 +89,7 @@ while True:
         (startX, startY, endX, endY) = box
         (mask, withoutMask) = pred
     #determine mask status from confidence
-        if (mask > 0.7):
+        if (mask > 0.6):
             label = "Mask : YES"
             color = (0, 255, 0) #green label
         elif (mask < 0.4):
