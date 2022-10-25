@@ -9,7 +9,7 @@ Python Face Mask Detection for Suratthani School CVBOX Project
   pip3 install -r requirements.txt
 ```
     
-## Training
+## Model Training
 
 ```bash
   python3 train_mask_detector.py --dataset dataset
