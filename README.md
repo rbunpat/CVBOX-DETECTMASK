@@ -14,8 +14,9 @@ Python Face Mask Detection for Suratthani School CVBOX Project
 ```bash
   python3 train_mask_detector.py --dataset dataset
 ```
-## Face Mask Detection
+## Usage - Face Mask Detection
 
+Set you configurations in the config.py file first then run
 ```bash
   python3 detect_mask_video.py
 ```
