@@ -4,7 +4,7 @@ import os
 import sys
 
 #import config file
-import videoconfig as config
+import maskdetect_config as config
 
 #get rid of annoying warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = str(config.tensorflowloglevel)
