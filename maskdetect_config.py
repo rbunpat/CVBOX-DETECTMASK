@@ -14,9 +14,9 @@ modelpath = 'mask_detector.model'
 takepic_enable = True
 
 #Image save directory
-maskdir = './maskpics'
-nomaskdir = './nomaskpics'
-unknowndir = './unknownpics'
+maskdir = './maskpics/'
+nomaskdir = './nomaskpics/'
+unknowndir = './unknownpics/'
 
 #Image file prefix and file type
 fileprefix = 'pic_'
