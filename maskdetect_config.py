@@ -5,7 +5,7 @@ tensorflowloglevel = 3
 pythontraceback = 0
 
 #Select Camera
-videosource = 2
+videosource = 0
 
 #Mask Detector Model Path
 modelpath = 'mask_detector.model'
