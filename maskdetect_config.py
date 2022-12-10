@@ -2,21 +2,25 @@
 tensorflowloglevel = 3
 
 #Python Traceback
-pythontraceback = 0
+pythontraceback = 1
 
 #Select Camera
-videosource = 0
+videosource = 2
 
 #Mask Detector Model Path
-modelpath = 'mask_detector.model'
+# modelpath = 'mask_detector.model'
+modelpath = 'newdataset.model'
 
 #Choose whether to save images
-takepic_enable = True
+takepic_enable = False
 
 #Image save directory
 maskdir = './maskpics/'
 nomaskdir = './nomaskpics/'
 unknowndir = './unknownpics/'
+maskfacedir = './maskfacecroppedpics/'
+nomaskfacedir = './nomaskfacecroppedpics/'
+unknownfacedir = './unknownfacecroppedpics/'
 
 #Image file prefix and file type
 fileprefix = 'pic_'
