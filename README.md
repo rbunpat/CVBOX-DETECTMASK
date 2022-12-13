@@ -5,6 +5,8 @@
 Python Face Mask Detection for Suratthani School CVBOX Project
 ## Installation
 
+Download the program from the "Releases" Tab
+
 ```bash
   pip3 install -r requirements.txt
 ```
