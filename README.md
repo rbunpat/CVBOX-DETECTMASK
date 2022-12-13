@@ -11,7 +11,7 @@ Download the program from the "Releases" Tab
   pip3 install -r requirements.txt
 ```
     
-## Model Training
+## Model Training (Skip if downloaded DetectMask.zip)
 
 ```bash
   python3 train.py --dataset dataset
