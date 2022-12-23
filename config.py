@@ -5,11 +5,18 @@ tensorflowloglevel = 3
 pythontraceback = 1
 
 #Select Camera
-videosource = 2
+videosource = 1
+
+#Image Server Address, download one from https://github.com/rbunpat/CVBOX-FILESERVER
+serverURL = 'YOURSERVERURL'
+
+#Serial Config
+serialPort = 'YOURCOMPORT'
+serialBaud = YOURBAUDRATE
 
 #Mask Detector Model Path
 # modelpath = 'mask_detector.model'
-modelpath = 'newdataset.model'
+modelpath = 'datasetv2.model'
 
 #Choose whether to save images
 takepic_enable = False
@@ -37,7 +44,3 @@ unknowntext = 'Mask : UNKNOWN'
 
 #Mask Detection Window Title
 windowtitle = 'Mask Detector'
-
-#Serial Config
-serialPort = 'YOURSERIALPORT'
-serialBaud = YOURSERIALBAUDRATE
