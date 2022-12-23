@@ -37,3 +37,7 @@ unknowntext = 'Mask : UNKNOWN'
 
 #Mask Detection Window Title
 windowtitle = 'Mask Detector'
+
+#Serial Config
+serialPort = 'YOURSERIALPORT'
+serialBaud = YOURSERIALBAUDRATE
