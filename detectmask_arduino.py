@@ -1,17 +1,13 @@
-import numpy as np
 import cv2
 import os
 import sys
 import serial
-
-from savePicture import saveFace, saveFull
-from maskdetect_config import *
-
+import numpy as np
+from imgTools import *
+from config import *
 from imutils.video import VideoStream
 
-serial_port = serialPort # change this to the correct port for your Arduino
-baud_rate = serialBaud
-ser = serial.Serial(serial_port, baud_rate)
+ser = serial.Serial(serialPort, serialBaud)
 
 # get rid of annoying warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = str(tensorflowloglevel)
@@ -24,8 +20,7 @@ from keras.models import load_model
 
 print('Loading Face detector...')
 prototxtPath = os.path.sep.join(["face_detector", "deploy.prototxt"])
-weightsPath = os.path.sep.join(
-    ["face_detector", "res10_300x300_ssd_iter_140000.caffemodel"])
+weightsPath = os.path.sep.join(["face_detector", "res10_300x300_ssd_iter_140000.caffemodel"])
 faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 print('Loading Mask detector...')
@@ -33,7 +28,6 @@ maskNet = load_model(modelpath)
 
 print('Starting video...')
 cam = VideoStream(src=videosource).start()
-
 
 def predictmask(frame, faceNet, maskNet):
     #get frame dimension and make a blob
@@ -82,9 +76,9 @@ def predictmask(frame, faceNet, maskNet):
 
 
 while True:
-    #read frame from camera duh
     data = ser.readline()  # read data from Arduino
     if data:
+        #read frame from camera duh
         frame = cam.read()
 
         #detect face and mask
@@ -125,6 +119,7 @@ while True:
 
         #show output frame
         cv2.imshow(windowtitle, frame)
+        sendImage(frame)
 
         key = cv2.waitKey(1) & 0xFF
         #if 'q' key is pressed, break from loop
