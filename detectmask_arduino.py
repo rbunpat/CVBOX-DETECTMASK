@@ -4,24 +4,23 @@ import os
 import sys
 import serial
 
-serial_port = 'COM6'  # change this to the correct port for your Arduino
-baud_rate = 9600
-ser = serial.Serial(serial_port, baud_rate)
-
 from savePicture import saveFace, saveFull
 from maskdetect_config import *
+
+from imutils.video import VideoStream
+
+serial_port = serialPort # change this to the correct port for your Arduino
+baud_rate = serialBaud
+ser = serial.Serial(serial_port, baud_rate)
 
 # get rid of annoying warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = str(tensorflowloglevel)
 sys.tracebacklimit = pythontraceback
 
 print('Loading Tensorflow...')
-
 from keras.applications.mobilenet_v2 import preprocess_input
 from keras.utils import img_to_array
 from keras.models import load_model
-
-from imutils.video import VideoStream
 
 print('Loading Face detector...')
 prototxtPath = os.path.sep.join(["face_detector", "deploy.prototxt"])
@@ -34,7 +33,6 @@ maskNet = load_model(modelpath)
 
 print('Starting video...')
 cam = VideoStream(src=videosource).start()
-# cam = VideoStream('http://10.10.0.9:8080/video').start()
 
 
 def predictmask(frame, faceNet, maskNet):
@@ -102,8 +100,8 @@ while True:
             if (mask > maskconfidence):
                 label = masktext
                 color = (0, 255, 0)
-                # saveFull(frame, maskdir)
-                # saveFace(faceframe, maskfacedir)
+                saveFull(frame, maskdir)
+                saveFace(faceframe, maskfacedir)
 
             elif (mask < nomaskconfidence):
                 label = nomasktext
