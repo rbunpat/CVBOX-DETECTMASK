@@ -5,22 +5,22 @@
 Python Face Mask Detection for Suratthani School CVBOX Project
 ## Installation
 
-Download the program from the "Releases" Tab
+1. Download the program from the "Releases" Tab (see the release note for which file to download)
+2. Install the required libraries
 
 ```bash
   pip3 install -r requirements.txt
 ```
     
-## Model Training (Skip if downloaded DetectMask.zip)
+## Model Training (Skip if downloaded DetectMask.zip or DetectMask_Arduino.zip)
 
 ```bash
   python3 train.py --dataset dataset
 ```
 ## Usage - Face Mask Detection
 
-Set you configurations in the config.py file first then run
+1. Set you configurations in the config.py
+2. Run the face mask detection script
 ```bash
   python3 detectmask.py
 ```
-## License
-MIT © [Chandrika Deb](https://github.com/chandrikadeb7/Face-Mask-Detection/blob/master/LICENSE)

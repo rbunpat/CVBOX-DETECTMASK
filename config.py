@@ -5,17 +5,16 @@ tensorflowloglevel = 3
 pythontraceback = 1
 
 #Select Camera
-videosource = 1
+videosource = 0
 
-#Image Server Address, download one from https://github.com/rbunpat/CVBOX-FILESERVER
-serverURL = 'YOURSERVERURL'
+#Image Server Address (see https://github.com/rbunpat/CVBOX-FILESERVER)
+serverURL = 'http://localhost/api/upload-image'
 
 #Serial Config
-serialPort = 'YOURCOMPORT'
+serialPort = 'YOURSERIALPORT'
 serialBaud = YOURBAUDRATE
 
 #Mask Detector Model Path
-# modelpath = 'mask_detector.model'
 modelpath = 'datasetv2.model'
 
 #Choose whether to save images
