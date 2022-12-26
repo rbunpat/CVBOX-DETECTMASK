@@ -7,6 +7,7 @@ from imgTools import *
 from config import *
 from imutils.video import VideoStream
 
+#serial setup
 ser = serial.Serial(serialPort, serialBaud)
 
 # get rid of annoying warnings
@@ -76,18 +77,32 @@ def predictmask(frame, faceNet, maskNet):
 
 
 while True:
-    data = ser.readline()  # read data from Arduino
+    #read data from arduino
+    data = ser.readline()
+
     if data:
-        #read frame from camera duh
+        #read frame from camera
         frame = cam.read()
+
+        #get rid of serial newline and carriage return
+        tempdata = str(data)
+        tempdata = tempdata.lstrip("b")
+        tempdata = tempdata.strip("'")
+        tempdata = tempdata.rstrip("\\r\\n")
 
         #detect face and mask
         (locs, preds) = predictmask(frame, faceNet, maskNet)
+
         #loop over detected faces and their locations
         for (box, pred) in zip(locs, preds):
             (startX, startY, endX, endY) = box
             (mask, withoutMask) = pred
-
+            
+            #make faceframe crop bigger
+            startY = int(startY - 50)
+            endY = int(endY + 50)
+            startX = int(startX - 50)
+            endX = int(endX + 50)
             faceframe = frame[startY:endY, startX:endX]
 
             #determine mask status from confidence and set label and color
@@ -109,23 +124,25 @@ while True:
                 saveFull(frame, nomaskdir)
                 saveFace(faceframe, unknownfacedir)
 
-            label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
+            label = label + " Temp: " + tempdata + "C"
 
             #display label and bounding box rectangle on output frame
             cv2.putText(frame, label, (startX, startY - 10),
-                        cv2.FONT_HERSHEY_DUPLEX, 1, color, 3)
+                        cv2.FONT_HERSHEY_DUPLEX, 1, color, 2)
             cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
             cv2.imshow('face', faceframe)
 
         #show output frame
         cv2.imshow(windowtitle, frame)
+
+        #send image to Node.js server (see https://github.com/rbunpat/CVBOX-FILESERVER)
         sendImage(frame)
 
-        key = cv2.waitKey(1) & 0xFF
         #if 'q' key is pressed, break from loop
+        key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
             break
 
 cv2.destroyAllWindows()
 cam.stop()
-cam.release()
+cam.release() 
